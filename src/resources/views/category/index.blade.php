@@ -5,27 +5,24 @@
       <div class="row my-3">
         <div class="col-12">
           <label for="">Category Title</label>
-          <input type="text" class="form-control">
-        </div>
-      </div>
-      <div class="row">
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-          <button class="btn btn-primary" type="button">추가</button>
+          <form action="/category/store" method="post">
+            @csrf
+            <input type="text" class="form-control" name="title">
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+              <button class="btn btn-primary"  >추가</button>
+            </div>
+          </form>
         </div>
       </div>
       <hr>
       <div class="row my-3">
         <div class="col-12">
           <ul class="list-group">
-            <li class="list-group-item">
-              <a href="{{url('/')}}/category/view/1">제목</a>
-            </li>
-            <li class="list-group-item">
-              <a href="{{url('/')}}/category/view/1">제목</a>
-            </li>
-            <li class="list-group-item">
-              <a href="{{url('/')}}/category/view/1">제목</a>
-            </li>
+            @foreach ($categorys as $item)
+              <li class="list-group-item">
+                <a href="{{url('/')}}/category/{{ $item->id }}"> {{ $item->title }}</a>
+              </li>
+            @endforeach
           </ul>
         </div>
       </div>

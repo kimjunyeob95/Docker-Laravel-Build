@@ -6,15 +6,29 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" href="{{url('/')}}/category">Category</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{url('/')}}/login">Login</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{url('/')}}/register">Register</a>
-        </li>
+        @auth
+          <li class="nav-item">
+            <a class="nav-link" href="{{url('/')}}/category">Category</a>
+          </li>
+        @endauth
+
+        @guest
+          <li class="nav-item">
+            <a class="nav-link" href="{{url('/')}}/login">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{url('/')}}/register">Register</a>
+          </li>    
+        @endguest
+        
+        @auth
+          <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <li class="nav-item">
+              <a class="nav-link" href="route('logout')" onclick="event.preventDefault();this.closest('form').submit();">Welcome ! {{auth()->user()->name}} | Log Out</a>
+            </li>
+          </form>
+        @endauth
       </ul>
     </div>
   </div>

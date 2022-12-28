@@ -6,31 +6,32 @@
 
 @section('content')
     <div class="container">
+      <input type="hidden" class="form-control" name="postid" value={{$data['post']['id']}}>
       <div class="row my-3">
         <div class="col-12">
           <label for="">Title</label>
-          <input type="text" class="form-control" name="title">
+          <input type="text" class="form-control" name="title" value={{$data['post']['title']}}>
         </div>
       </div>
       <div class="row my-3">
         <div class="col-12">
           <label for="">Category</label>
           <select class="form-select" aria-label="Default select example" name="category">
-            @foreach ($categorys as $key => $item)
-              <option {{$key == 0 ? "selected" : ""}} value={{$item->id}}>{{$item->title}}</option>    
+            @foreach ($data['categorys'] as $key => $item)
+              <option {{$data['post']['category_id'] == $item['id'] ? "selected" : ""}} value={{$item->id}}>{{$item->title}}</option>    
             @endforeach
           </select>
         </div>
       </div>
       <div class="row my-3">
         <div class="col-12">
-          <div id="editor"></div>
+          <div id="editor">{!!$data['post']['content'] !!}</div>
         </div>
       </div>
       <div class="row my-3">
         <div class="col-12">
           <div class="d-grid gap-2 d-md-flex justify-content-md-end ">
-            <button class="btn btn-success" id="btn_save">저장</button>
+            <button class="btn btn-success" type="button" id="btn_save">수정</button>
           </div>
         </div>
       </div>
@@ -50,10 +51,11 @@
     let title = $('input[name="title"]').val();
     let category = $('select[name="category"]').val();
     let content = editor.getData();
+    let id = $('input[name="postid"]').val();
 
     $.ajax({
-      url: '/forum/create/posts',
-      method: 'POST',
+      url: `/forum/${id}/modify`,
+      method: 'PUT',
       dataType: 'json',
       data:{
         _token : CSRF_TOKEN,
@@ -62,16 +64,13 @@
         content
       },
       success: function(res){
-        console.log(res)
-        window.location.href = "/";
+        window.location.href=`/forum/view/${id}`;
       },
       error: function(res){
         console.log(res)
       }
     })
   })
-  
-  
 </script>
 @endsection
 
